@@ -1,14 +1,20 @@
-#import <React/RCTBridgeModule.h>
+//
+//  AdsPostXWrapper.m
+//  GoingNative
+//
+//  Created by shivang vyas on 25/11/22.
+//
 
-@interface RCT_EXTERN_MODULE(Rnadspostx, NSObject)
+#import <Foundation/Foundation.h>
+#import "React/RCTBridgeModule.h"
+#import "React/RCTEventEmitter.h"
 
-RCT_EXTERN_METHOD(multiply:(float)a withB:(float)b
-                 withResolver:(RCTPromiseResolveBlock)resolve
-                 withRejecter:(RCTPromiseRejectBlock)reject)
+@interface RCT_EXTERN_REMAP_MODULE(adsPostXPlugin, Rnadspostx, NSObject)
+RCT_EXTERN_METHOD(initWith: (NSString)accountId callback: (RCTResponseSenderBlock)callback)
+RCT_EXTERN_METHOD(load: (NSDictionary)attributes completion: (RCTResponseSenderBlock)completion)
+RCT_EXTERN_METHOD(show:(int)presentationStyle isTransparent:(BOOL)isTransparent topMargin: (NSInteger)topMargin rightMargin:(NSInteger)rightMargin bottomMargin:(NSInteger)bottomMargin leftMargin:(NSInteger)leftMargin)
 
-+ (BOOL)requiresMainQueueSetup
-{
-  return NO;
-}
-
+RCT_EXTERN_METHOD(setDebugLog:(int)isenabled)
+RCT_EXTERN_METHOD(setEnvironment:(int)environment)
 @end
+

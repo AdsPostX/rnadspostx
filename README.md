@@ -10,12 +10,45 @@ npm install rnadspostx
 
 ## Usage
 
+1. Init AdsPostX:
+
 ```js
-import { multiply } from 'rnadspostx';
+ const accountId = 'a359ddi39903994f';
+ AdsPostXPlugin.init(accountId, (response) => {
+     /* if response is true, mean init call is success.
+        otherwise you will get error with response.*/
+    }
+});
+```
 
-// ...
+2. Load AdsPostX Offers:
 
-const result = await multiply(3, 7);
+```js
+const attributes = { firstname: 'john', country: 'US' };
+
+AdsPostXPlugin.load(attributes, (response) => {
+  /*
+    if response is 'true' mean offer loaded successfully,
+    else check 'error' field for error while loading offers.
+    */
+});
+```
+
+3. Show AdsPostX Offers:
+
+```js
+AdsPostXPlugin.show(
+  topMargin, //eg: 5
+  rightMargin, //eg: 5
+  bottomMargin, //eg: 5
+  leftMargin, //eg: 5
+  (response) => {
+    /*
+            if response is 'true' then it means offers are being displayed correctly.
+            if not then it will show error.
+        */
+  }
+);
 ```
 
 ## Contributing

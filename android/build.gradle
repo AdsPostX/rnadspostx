@@ -11,6 +11,7 @@ buildscript {
     classpath 'com.android.tools.build:gradle:3.5.3'
     // noinspection DifferentKotlinGradleVersion
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
   }
 }
 
@@ -135,6 +136,12 @@ dependencies {
   implementation "com.facebook.react:react-native:+"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 // From node_modules
+//  implementation files('/Users/shivang/Desktop/shivang/ReactNative/rn-adspostx/AdsPostXRNDemoApp/android/app/libs/adspostx-release.aar')
+  compileOnly files('/Users/shivang/Desktop/Baajar/AdsPostx/ReactNative/ReactNative-SDK/AdsPostXRNDemoApp/android/app/libs/adspostx-release.aar')
+
+  implementation 'com.google.android.material:material:1.6.1'
+  implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2"
+
 }
 
 if (isNewArchitectureEnabled()) {

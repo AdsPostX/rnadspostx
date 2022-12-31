@@ -23,6 +23,9 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "esnext"
+    "target": "esnext",
+    "allowJs": true,
+    "outDir": "./dist/out-tsc"
+
   }
 }
