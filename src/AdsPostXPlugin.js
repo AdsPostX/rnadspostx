@@ -1,10 +1,5 @@
 import { NativeModules, NativeEventEmitter } from 'react-native';
 class AdsPostXPlugin {
-  constructor(props) {
-    this.style = 0;
-    this.transparent = 0;
-  }
-
   init = (accountId, callback) => {
     NativeModules.adsPostXPlugin.initWith(accountId, (response) => {
       // console.log(`obj : ${obj}`);
@@ -20,33 +15,44 @@ class AdsPostXPlugin {
     });
   };
 
-  show = (topMargin, rightMargin, bottomMargin, leftMargin, callback) => {
+  show = (
+    topMargin,
+    rightMargin,
+    bottomMargin,
+    leftMargin,
+    isTransparent,
+    style,
+    errorCallback,
+    showCallback,
+    dismissCallback
+  ) => {
     const eventEmitter = new NativeEventEmitter(NativeModules.adsPostXPlugin);
     eventEmitter.addListener('onShow', (event) => {
-      console.log(`on show result: ${event}`);
+      //console.log(`on show result: ${event}`);
+      showCallback();
     });
     eventEmitter.addListener('onError', (event) => {
-      console.log(`on Error result: ${event}`);
+      //console.log(`on Error result: ${event}`);
       if (eventEmitter) {
         eventEmitter.removeAllListeners('onError');
         eventEmitter.removeAllListeners('onShow');
         eventEmitter.removeAllListeners('onDismiss');
       }
-      callback(event);
+      errorCallback(event);
     });
     eventEmitter.addListener('onDismiss', (event) => {
-      console.log(`on dismiss result: ${event}`);
+      //console.log(`on dismiss result: ${event}`);
       if (eventEmitter) {
         eventEmitter.removeAllListeners('onError');
         eventEmitter.removeAllListeners('onShow');
         eventEmitter.removeAllListeners('onDismiss');
       }
-      callback(event);
+      dismissCallback();
     });
 
     NativeModules.adsPostXPlugin.show(
-      this.style,
-      this.transparent === 0,
+      style,
+      isTransparent,
       topMargin,
       rightMargin,
       bottomMargin,
