@@ -67,12 +67,6 @@ class AdsPostXPlugin {
   setEnvironment = (env) => {
     NativeModules.adsPostXPlugin.setEnvironment(env);
   };
-  setPresentationStyle = (style) => {
-    this.style = style;
-  };
-  setTransparancy = (transparent) => {
-    this.transparent = transparent;
-  };
 }
 
 const adsPostXPlugin = new AdsPostXPlugin();
