@@ -42,12 +42,17 @@ AdsPostXPlugin.show(
   rightMargin, //eg: 5
   bottomMargin, //eg: 5
   leftMargin, //eg: 5
-  (response) => {
-    /*
-            if response is 'true' then it means offers are being displayed correctly.
-            if not then it will show error.
-        */
-  }
+  true, // is transparent
+  0, // style: 0 - popup, 1 - full screen
+  (errorCallback = (error) => {
+    console.log(`errorCallback: ${error}`);
+  }),
+  (showCallback = () => {
+    console.log('showCallback: offer shown');
+  }),
+  (dismissCallback = () => {
+    console.log('dismissCallback: offer dismissed');
+  })
 );
 ```
 
