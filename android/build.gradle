@@ -138,7 +138,7 @@ dependencies {
 // From node_modules
 
 
-  // change this path to => client app path...
+  // change this path to => client app/libs/adspostx-release.aar path...
   compileOnly files ("../../AdsPostXRNDemoApp/android/app/libs/adspostx-release.aar")
 
   implementation 'com.google.android.material:material:1.6.1'
