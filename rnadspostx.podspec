@@ -31,5 +31,6 @@ Pod::Spec.new do |s|
     s.dependency "RCTRequired"
     s.dependency "RCTTypeSafety"
     s.dependency "ReactCommon/turbomodule/core"
+    s.dependency "AdsPostX", "~> 1.0.0"
   end
 end
