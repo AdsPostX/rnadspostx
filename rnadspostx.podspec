@@ -12,6 +12,7 @@ Pod::Spec.new do |s|
   s.authors      = package["author"]
 
   s.platforms    = { :ios => "13.0" }
+  s.ios.deployment_target = '13.0'
   s.source       = { :git => "https://github.com/AdsPostX/rnadspostx.git", :tag => "#{s.version}" }
 
   s.source_files = "ios/**/*.{h,m,mm,swift}"
