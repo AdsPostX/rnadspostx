@@ -16,43 +16,46 @@ class AdsPostXPlugin {
   };
 
   show = (
-    topMargin,
-    rightMargin,
-    bottomMargin,
-    leftMargin,
-    isTransparent,
-    style,
-    errorCallback,
-    showCallback,
-    dismissCallback
+    position = {
+      topMargin: 5.0,
+      rightMargin: 5.0,
+      bottomMargin: 5.0,
+      leftMargin: 5.0,
+    },
+    styles = { transparent: true, type: 'popup' },
+    callbacks = {}
   ) => {
+    const { showCallback, errorCallback, dismissCallback } = callbacks;
+
+    const transparent = styles.transparent;
+    const type = styles.type === 'popup' ? 0 : 1;
+
     const eventEmitter = new NativeEventEmitter(NativeModules.adsPostXPlugin);
     eventEmitter.addListener('onShow', (event) => {
-      //console.log(`on show result: ${event}`);
-      showCallback();
+      showCallback && showCallback();
     });
     eventEmitter.addListener('onError', (event) => {
-      //console.log(`on Error result: ${event}`);
       if (eventEmitter) {
         eventEmitter.removeAllListeners('onError');
         eventEmitter.removeAllListeners('onShow');
         eventEmitter.removeAllListeners('onDismiss');
       }
-      errorCallback(event);
+      errorCallback && errorCallback(event);
     });
     eventEmitter.addListener('onDismiss', (event) => {
-      //console.log(`on dismiss result: ${event}`);
       if (eventEmitter) {
         eventEmitter.removeAllListeners('onError');
         eventEmitter.removeAllListeners('onShow');
         eventEmitter.removeAllListeners('onDismiss');
       }
-      dismissCallback();
+      dismissCallback && dismissCallback();
     });
 
+    const { topMargin, rightMargin, bottomMargin, leftMargin } = position;
+
     NativeModules.adsPostXPlugin.show(
-      style,
-      isTransparent,
+      type,
+      transparent,
       topMargin,
       rightMargin,
       bottomMargin,

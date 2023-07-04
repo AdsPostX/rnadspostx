@@ -26,25 +26,38 @@ class RnadspostxModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
-  fun load(attributes: ReadableMap,
-           completion: Callback){
+  fun load(attributes: ReadableMap, completion: Callback) {
+    val callback = object : Callback {
+      var invoked = false
+  
+      override fun invoke(vararg args: Any?) {
+        synchronized(this) {
+          if (!invoked) {
+            invoked = true
+            completion.invoke(*args)
+          }
+        }
+      }
+    }
+  
     Handler(Looper.getMainLooper()).post {
-
       val map = attributes.toHashMap().toMap()
-
-            AdsPostX.load(context,map) { status, error ->
-              val map = Arguments.createMap()
-              map.putBoolean(Keys.STATUS, status)
-              if (error != null) {
-                map.putString(Keys.ERROR, error.message)
-              } else {
-                map.putNull(Keys.ERROR)
-              }
-              completion.invoke(map)
-            }          
+  
+      AdsPostX.load(context, map) { status, error ->
+        val resultMap = Arguments.createMap()
+        resultMap.putBoolean(Keys.STATUS, status)
+  
+        if (error != null) {
+          resultMap.putString(Keys.ERROR, error.message)
+        } else {
+          resultMap.putNull(Keys.ERROR)
+        }
+  
+        callback.invoke(resultMap)
+      }
     }
   }
-
+  
 
   @ReactMethod
   fun show(presentationStyle: Int,
