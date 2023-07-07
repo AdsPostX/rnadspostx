@@ -15,16 +15,18 @@ class AdsPostXPlugin {
     });
   };
 
-  show = (
-    position = {
-      topMargin: 5.0,
-      rightMargin: 5.0,
-      bottomMargin: 5.0,
-      leftMargin: 5.0,
-    },
-    styles = { transparent: true, type: 'popup' },
-    callbacks = {}
-  ) => {
+  show = (showOptions = {}) => {
+    const {
+      position = {
+        topMargin: 5.0,
+        rightMargin: 5.0,
+        bottomMargin: 5.0,
+        leftMargin: 5.0,
+      },
+      styles = { transparent: true, type: 'popup' },
+      callbacks = {},
+    } = showOptions;
+
     const { showCallback, errorCallback, dismissCallback } = callbacks;
 
     const transparent = styles.transparent;
@@ -63,12 +65,48 @@ class AdsPostXPlugin {
     );
   };
 
+  getAttributes = (callback) => {
+    NativeModules.adsPostXPlugin.getAttributes((attributes) => {
+      callback(attributes);
+    });
+  };
+
+  getEnvironment = (callback) => {
+    NativeModules.adsPostXPlugin.getEnvironment((environment) => {
+      callback(environment);
+    });
+  };
+
   setDebugLog = (isenabled) => {
     NativeModules.adsPostXPlugin.setDebugLog(isenabled);
   };
 
   setEnvironment = (env) => {
     NativeModules.adsPostXPlugin.setEnvironment(env);
+  };
+
+  setTimeOut = (seconds) => {
+    NativeModules.adsPostXPlugin.setTimeOut(seconds);
+  };
+
+  // getOffers = (apiKey, parameters, completion) => {
+  //   NativeModules.adsPostXPlugin.getOffers(apiKey, parameters, completion);
+  // };
+
+  getOffers = async (apiKey, parameters = {}) => {
+    return new Promise((resolve, reject) => {
+      NativeModules.adsPostXPlugin.getOffers(
+        apiKey,
+        parameters,
+        (status, response) => {
+          if (status) {
+            resolve({ status, response });
+          } else {
+            reject({ status, response });
+          }
+        }
+      );
+    });
   };
 }
 

@@ -86,6 +86,10 @@ class Rnadspostx: RCTEventEmitter {
     AdsPostx.EnableDebugLog(isenabled)
   }
   
+  @objc func setTimeOut (_ seconds: Double) {
+    AdsPostx.setTimeOut(seconds: seconds)
+  }
+
   @objc func setEnvironment(_ environment: Int) {
     if(environment == 1) {
       AdsPostx.SetEnvironment(AdPostxEnvironment.test)
@@ -94,5 +98,32 @@ class Rnadspostx: RCTEventEmitter {
     }
   }
   
+  @objc
+  func getAttributes(_ callback: @escaping RCTResponseSenderBlock) {
+    let attributes = AdsPostx.getAttributes()
+    callback([attributes ?? NSNull()])
+}
+
+  @objc
+  func getEnvironment(_ callback: @escaping RCTResponseSenderBlock) {
+    let env = AdsPostx.getEnvironment()
+    callback([env ?? NSNull()])
+}
+
+@objc
+func getOffers(_ apiKey: String, parameters: [String: String], completion: @escaping RCTResponseSenderBlock) {
+  // Implementation of the method
+              AdsPostx.getOffers(apiKey: apiKey, parameters: parameters) { [weak self] result in
+                switch result {
+                case .success(let json):
+                // let jsonString = "\(json)"
+                  completion([true, json])
+                case .failure(let error):
+                // print("Error inside native : \(["error" : error.localizedDescription ?? "Unknown error!"])")
+                  completion([false, ["error" : error.localizedDescription ?? "Unknown error!"]])
+                }
+            }
+}
+
 }
 
