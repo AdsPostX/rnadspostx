@@ -38,26 +38,31 @@ class Rnadspostx: RCTEventEmitter {
       }
     }
   }
+
+@objc func load(_ attributes: [String: Any], completion: @escaping RCTResponseSenderBlock) {
+  var jsonObject: [String: Any] = [:]
+  var invoked = false
   
-  @objc func load(_ attributes: [String: Any], completion: @escaping RCTResponseSenderBlock) {
-    var jsonObject: [String: Any] = [:]
-    
-    AdsPostx.load(attributes: attributes) { result in
+  AdsPostx.load(attributes: attributes) { result in
+    if !invoked {
+      invoked = true
+      
       switch(result) {
       case .success():
         jsonObject[ResponseKeys.status] = true
-        completion([jsonObject])
       case .failure(let error):
         jsonObject[ResponseKeys.status] = false
         if let error = error as? AdsPostxError {
           jsonObject[ResponseKeys.error] = error.description
         }
-        completion([jsonObject])
       }
+      
+      completion([jsonObject])
     }
-
   }
-  
+}
+
+
   @objc func show(_ presentationStyle: Int, isTransparent: Bool, topMargin: Int, rightMargin: Int, bottomMargin: Int, leftMargin: Int) {
     var style = OfferPresentationStyle.popup // default set to popup.
     if(presentationStyle == 1) {
