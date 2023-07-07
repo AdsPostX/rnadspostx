@@ -8,6 +8,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.facebook.react.bridge.Callback
 import com.facebook.react.bridge.ReactMethod
 import org.json.JSONObject
+import org.json.JSONArray
 
 class RnadspostxModule(reactContext: ReactApplicationContext) :
   ReactContextBaseJavaModule(reactContext) {
@@ -157,6 +158,23 @@ fun getEnvironment(completion: Callback) {
 }
 
 
+private fun jsonArrayToWritableArray(jsonArray: JSONArray): WritableArray {
+  val writableArray = Arguments.createArray()
+  for (i in 0 until jsonArray.length()) {
+    val value = jsonArray[i]
+    when (value) {
+      is String -> writableArray.pushString(value)
+      is Int -> writableArray.pushInt(value)
+      is Double -> writableArray.pushDouble(value)
+      is Boolean -> writableArray.pushBoolean(value)
+      is JSONObject -> writableArray.pushMap(jsonObjectToWritableMap(value))
+      is JSONArray -> writableArray.pushArray(jsonArrayToWritableArray(value))
+      else -> writableArray.pushNull()
+    }
+  }
+  return writableArray
+}
+
 private fun jsonObjectToWritableMap(jsonObject: JSONObject): WritableMap {
   val writableMap = Arguments.createMap()
   val iterator = jsonObject.keys()
@@ -169,6 +187,8 @@ private fun jsonObjectToWritableMap(jsonObject: JSONObject): WritableMap {
           is Double -> writableMap.putDouble(key, value)
           is Boolean -> writableMap.putBoolean(key, value)
           is JSONObject -> writableMap.putMap(key, jsonObjectToWritableMap(value))
+          is JSONArray -> writableMap.putArray(key, jsonArrayToWritableArray(value))
+          else -> writableMap.putNull(key)
           // Add additional cases for other types if needed
       }
   }
@@ -180,7 +200,7 @@ fun getOffers(apiKey: String, parameters: ReadableMap, completion: Callback) {
   val attributes = readableMapToStringMap(parameters)
 
   AdsPostX.getOffers(apiKey, attributes) { result ->
-    result.onSuccess { response ->      
+    result.onSuccess { response -> 
       completion.invoke(true, jsonObjectToWritableMap(response))
     }.onFailure { error ->
       val errorMap: WritableMap = Arguments.createMap()
