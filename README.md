@@ -37,23 +37,74 @@ AdsPostXPlugin.load(attributes, (response) => {
 3. Show AdsPostX Offers:
 
 ```js
-AdsPostXPlugin.show(
-  topMargin, //eg: 5
-  rightMargin, //eg: 5
-  bottomMargin, //eg: 5
-  leftMargin, //eg: 5
-  true, // is transparent
-  0, // style: 0 - popup, 1 - full screen
-  (errorCallback = (error) => {
-    console.log(`errorCallback: ${error}`);
-  }),
-  (showCallback = () => {
-    console.log('showCallback: offer shown');
-  }),
-  (dismissCallback = () => {
-    console.log('dismissCallback: offer dismissed');
-  })
-);
+// values used here are just for demo purpose, use actual values when you are integrating SDK.
+
+const showOptions = {
+  position: {
+    topMargin: 5.0,
+    rightMargin: 5.0,
+    bottomMargin: 5.0,
+    leftMargin: 5.0,
+  },
+  styles: {
+    transparent: true,
+    type: 'popup', // OR 'fullscreen',
+  },
+  callbacks: {
+    showCallback: () => {
+      console.log('Show callback called');
+    },
+    errorCallback: (event) => {
+      console.log('Error callback called:', event);
+    },
+    dismissCallback: () => {
+      console.log('Dismiss callback called');
+    },
+  },
+};
+
+AdsPostXPlugin.show(showOptions);
+```
+
+4. Get Offers
+
+```js
+const apiKey = 'YOUR_API_KEY';
+const attributes = {
+  country: 'USA',
+  firstname: 'Dev',
+  creative: '1',
+  dev: '1',
+};
+
+try {
+  const responseData = await AdsPostXPlugin.getOffers(apiKey, attributes);
+
+  // to access offers
+  if (responseData.status) {
+    const offers = responseData.response.data.offers;
+  }
+} catch (error) {
+  // Handle any errors that occurred during the getOffers call...
+}
+```
+
+5. Set Environment
+
+```js
+AdsPostXPlugin.setEnvironment(0); // for 'live' environment.
+
+OR;
+
+AdsPostXPlugin.setEnvironment(1); // for 'test' environment.
+```
+
+6. Set Debug Log
+
+```js
+AdsPostx.setDebugLog(true);
+OR;
+AdsPostx.setDebugLog(false);
 ```
 
 ## Contributing

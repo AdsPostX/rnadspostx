@@ -9,8 +9,8 @@ class AdsPostXPlugin {
   };
 
   load = (attributes, callback) => {
-    NativeModules.adsPostXPlugin.load(attributes, (response) => {
-      // console.log(`status is : ${resp.status} and error is: ${resp.error}`);
+    const sanitizedAttributes = attributes || {}; // Use {} if attributes is null or undefined
+    NativeModules.adsPostXPlugin.load(sanitizedAttributes, (response) => {
       callback(response);
     });
   };
@@ -89,15 +89,12 @@ class AdsPostXPlugin {
     NativeModules.adsPostXPlugin.setTimeOut(seconds);
   };
 
-  // getOffers = (apiKey, parameters, completion) => {
-  //   NativeModules.adsPostXPlugin.getOffers(apiKey, parameters, completion);
-  // };
-
   getOffers = async (apiKey, parameters = {}) => {
     return new Promise((resolve, reject) => {
+      const sanitizedParameters = parameters || {}; // Use {} if parameters is null or undefined
       NativeModules.adsPostXPlugin.getOffers(
         apiKey,
-        parameters,
+        sanitizedParameters,
         (status, response) => {
           if (status) {
             resolve({ status, response });
