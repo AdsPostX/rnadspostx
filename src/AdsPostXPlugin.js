@@ -65,12 +65,6 @@ class AdsPostXPlugin {
     );
   };
 
-  getPayload = (callback) => {
-    NativeModules.adsPostXPlugin.getAttributes((payload) => {
-      callback(payload);
-    });
-  };
-
   getEnvironment = (callback) => {
     NativeModules.adsPostXPlugin.getEnvironment((environment) => {
       callback(environment);

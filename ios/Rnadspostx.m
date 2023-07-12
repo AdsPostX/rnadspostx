@@ -17,7 +17,6 @@ RCT_EXTERN_METHOD(show:(int)presentationStyle isTransparent:(BOOL)isTransparent 
 RCT_EXTERN_METHOD(setDebugLog:(int)isenabled)
 RCT_EXTERN_METHOD(setTimeOut:(double)seconds)
 RCT_EXTERN_METHOD(setEnvironment:(int)environment)
-RCT_EXTERN_METHOD(getAttributes:(RCTResponseSenderBlock)callback)
 RCT_EXTERN_METHOD(getEnvironment:(RCTResponseSenderBlock)callback)
 RCT_EXTERN_METHOD(getOffers: (NSString)apiKey parameters: (NSDictionary)parameters completion: (RCTResponseSenderBlock)completion)
 

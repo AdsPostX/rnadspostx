@@ -103,11 +103,6 @@ class Rnadspostx: RCTEventEmitter {
     }
   }
   
-  @objc
-  func getAttributes(_ callback: @escaping RCTResponseSenderBlock) {
-    let attributes = AdsPostx.getAttributes()
-    callback([attributes ?? NSNull()])
-}
 
   @objc
   func getEnvironment(_ callback: @escaping RCTResponseSenderBlock) {

@@ -96,20 +96,6 @@ class RnadspostxModule(reactContext: ReactApplicationContext) :
   }
 
 
- @ReactMethod
-fun getAttributes(completion: Callback) {
-  val attributes: Map<String, Any>? = AdsPostX.getAttributes()
-  val resultMap = Arguments.createMap()
-
-  if (attributes != null) {
-    for ((key, value) in attributes) {
-      // Add key-value pairs to the resultMap
-      // Adjust the logic here based on the structure of your attributes
-      resultMap.putString(key, value.toString())
-    }
-  }
-  completion.invoke(resultMap)
-}
 
 @ReactMethod
 fun getEnvironment(completion: Callback) {
