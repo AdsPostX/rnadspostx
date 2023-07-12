@@ -8,9 +8,9 @@ class AdsPostXPlugin {
     });
   };
 
-  load = (callback, attributes = {}) => {
-    const sanitizedAttributes = attributes || {}; // Use {} if attributes is null or undefined
-    NativeModules.adsPostXPlugin.load(sanitizedAttributes, (response) => {
+  load = (callback, payload = {}) => {
+    const sanitizedPayload = payload || {}; // Use {} if payload is null or undefined
+    NativeModules.adsPostXPlugin.load(sanitizedPayload, (response) => {
       callback(response);
     });
   };
@@ -65,9 +65,9 @@ class AdsPostXPlugin {
     );
   };
 
-  getAttributes = (callback) => {
-    NativeModules.adsPostXPlugin.getAttributes((attributes) => {
-      callback(attributes);
+  getPayload = (callback) => {
+    NativeModules.adsPostXPlugin.getAttributes((payload) => {
+      callback(payload);
     });
   };
 

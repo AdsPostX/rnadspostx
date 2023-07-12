@@ -24,14 +24,14 @@ npm install rnadspostx
 2. Load AdsPostX Offers:
 
 ```js
-const attributes = { firstname: 'john', country: 'US' };
+const payload = { firstname: 'john', country: 'US' };
 
-AdsPostXPlugin.load(attributes, (response) => {
+AdsPostXPlugin.load((response) => {
   /*
     if response is 'true' mean offer loaded successfully,
     else check 'error' field for error while loading offers.
     */
-});
+}, payload);
 ```
 
 3. Show AdsPostX Offers:
@@ -70,7 +70,7 @@ AdsPostXPlugin.show(showOptions);
 
 ```js
 const apiKey = 'YOUR_API_KEY';
-const attributes = {
+const payload = {
   country: 'USA',
   firstname: 'Dev',
   creative: '1',
@@ -78,7 +78,7 @@ const attributes = {
 };
 
 try {
-  const responseData = await AdsPostXPlugin.getOffers(apiKey, attributes);
+  const responseData = await AdsPostXPlugin.getOffers(apiKey, payload);
 
   // to access offers
   if (responseData.status) {
