@@ -1,6 +1,6 @@
 {
   "name": "rnadspostx",
-  "version": "0.1.21",
+  "version": "0.1.22",
   "description": "rnadspostx package allows you to integrate adspostx offers in your react native app.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
