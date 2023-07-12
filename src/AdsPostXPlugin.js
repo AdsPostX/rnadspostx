@@ -8,7 +8,7 @@ class AdsPostXPlugin {
     });
   };
 
-  load = (attributes, callback) => {
+  load = (attributes = {}, callback) => {
     const sanitizedAttributes = attributes || {}; // Use {} if attributes is null or undefined
     NativeModules.adsPostXPlugin.load(sanitizedAttributes, (response) => {
       callback(response);
