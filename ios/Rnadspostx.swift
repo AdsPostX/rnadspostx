@@ -111,7 +111,7 @@ class Rnadspostx: RCTEventEmitter {
 }
 
 @objc
-func getOffers(_ apiKey: String, parameters: [String: String], completion: @escaping RCTResponseSenderBlock) {
+func getOffers(_ apiKey: String, parameters: [String: Any], completion: @escaping RCTResponseSenderBlock) {
   // Implementation of the method
               AdsPostx.getOffers(apiKey: apiKey, parameters: parameters) { [weak self] result in
                 switch result {
