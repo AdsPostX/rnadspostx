@@ -122,25 +122,57 @@ fun getEnvironment(completion: Callback) {
     }
   }
 
+private fun convertNullableMapToMap(nullableMap: Map<String, Any?>): Map<String, Any> {
+    return nullableMap
+        .filterValues { it != null } // Remove null values
+        .mapValues { it.value!! } // Convert Any? to Any (force unwrapping)
+}
 
-  private fun readableMapToStringMap(readableMap: ReadableMap?): Map<String, String> {
-    if (readableMap == null) {
-        // Handle the null case
-        return emptyMap()
-    }
+private fun readableMapToAnyMap(readableMap: ReadableMap?): Map<String, Any?> {
+  if (readableMap == null) {
+      // Handle the null case
+      return emptyMap()
+  }
 
-    val map = mutableMapOf<String, String>()
+  val map = mutableMapOf<String, Any?>()
 
-    val iterator = readableMap.keySetIterator()
-    while (iterator.hasNextKey()) {
-        val key = iterator.nextKey()
-        val value = readableMap.getString(key)
-        if (value != null) {
-            map[key] = value
-        }
-    }
+  val iterator = readableMap.keySetIterator()
+  while (iterator.hasNextKey()) {
+      val key = iterator.nextKey()
+      val value = readableMap.getType(key)
+      when (value) {
+          ReadableType.Null -> map[key] = null
+          ReadableType.Boolean -> map[key] = readableMap.getBoolean(key)
+          ReadableType.Number -> map[key] = readableMap.getDouble(key)
+          ReadableType.String -> map[key] = readableMap.getString(key)
+          ReadableType.Map -> map[key] = readableMap.getMap(key)?.let { readableMapToAnyMap(it) }
+          ReadableType.Array -> map[key] = readableMap.getArray(key)?.let { readableArrayToAnyList(it) }
+          // Add more cases for other types if needed
+          else -> map[key] = null // Set unknown types to null
+      }
+  }
 
-    return map
+  return map
+}
+
+private fun readableArrayToAnyList(readableArray: ReadableArray): List<Any?> {
+  val list = mutableListOf<Any?>()
+
+  for (i in 0 until readableArray.size()) {
+      val value = readableArray.getType(i)
+      when (value) {
+          ReadableType.Null -> list.add(null)
+          ReadableType.Boolean -> list.add(readableArray.getBoolean(i))
+          ReadableType.Number -> list.add(readableArray.getDouble(i))
+          ReadableType.String -> list.add(readableArray.getString(i))
+          ReadableType.Map -> list.add(readableArray.getMap(i)?.let { readableMapToAnyMap(it) })
+          ReadableType.Array -> list.add(readableArray.getArray(i)?.let { readableArrayToAnyList(it) })
+          // Add more cases for other types if needed
+          else -> list.add(null) // Set unknown types to null
+      }
+  }
+
+  return list
 }
 
 
@@ -183,10 +215,11 @@ private fun jsonObjectToWritableMap(jsonObject: JSONObject): WritableMap {
 
 @ReactMethod
 fun getOffers(apiKey: String, parameters: ReadableMap, completion: Callback) {
-  val attributes = readableMapToStringMap(parameters)
+  val attributes = readableMapToAnyMap(parameters)
+  val senitizedAttributes =  convertNullableMapToMap(attributes)
 
-  AdsPostX.getOffers(apiKey, attributes) { result ->
-    result.onSuccess { response -> 
+  AdsPostX.getOffers(apiKey, senitizedAttributes) { result ->
+    result.onSuccess { response ->
       completion.invoke(true, jsonObjectToWritableMap(response))
     }.onFailure { error ->
       val errorMap: WritableMap = Arguments.createMap()
@@ -194,10 +227,10 @@ fun getOffers(apiKey: String, parameters: ReadableMap, completion: Callback) {
       completion.invoke(false, errorMap)
     }
   }
-  
+
 }
 
-  
+
 
   @ReactMethod
   fun addListener(eventName: String) {
