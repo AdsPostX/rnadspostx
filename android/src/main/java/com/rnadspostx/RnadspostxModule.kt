@@ -218,7 +218,7 @@ fun getOffers(apiKey: String, parameters: ReadableMap, completion: Callback) {
   val attributes = readableMapToAnyMap(parameters)
   val senitizedAttributes =  convertNullableMapToMap(attributes)
 
-  AdsPostX.getOffers(apiKey, senitizedAttributes) { result ->
+  AdsPostX.getOffers(apiKey, senitizedAttributes, context) { result ->
     result.onSuccess { response ->
       completion.invoke(true, jsonObjectToWritableMap(response))
     }.onFailure { error ->
