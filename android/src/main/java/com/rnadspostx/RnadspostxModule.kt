@@ -16,11 +16,11 @@ class RnadspostxModule(reactContext: ReactApplicationContext) :
     private var context: ReactApplicationContext = reactContext
 
   @ReactMethod
-  fun initWith(accountId: String,
+  fun initWith(sdkId: String,
                completion: Callback
   ) {
     val map = Arguments.createMap()
-    AdsPostX.init(accountId) { status, error ->
+    AdsPostX.init(sdkId) { status, error ->
       map.putBoolean(Keys.STATUS, status)
       if(error != null) {
         map.putString(Keys.ERROR, error.message)
@@ -214,11 +214,11 @@ private fun jsonObjectToWritableMap(jsonObject: JSONObject): WritableMap {
 }
 
 @ReactMethod
-fun getOffers(apiKey: String, parameters: ReadableMap, completion: Callback) {
+fun getOffers(sdkId: String, parameters: ReadableMap, completion: Callback) {
   val attributes = readableMapToAnyMap(parameters)
   val senitizedAttributes =  convertNullableMapToMap(attributes)
 
-  AdsPostX.getOffers(apiKey, senitizedAttributes, context) { result ->
+  AdsPostX.getOffers(sdkId, senitizedAttributes, context) { result ->
     result.onSuccess { response ->
       completion.invoke(true, jsonObjectToWritableMap(response))
     }.onFailure { error ->

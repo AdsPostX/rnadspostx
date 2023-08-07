@@ -1,7 +1,7 @@
 import { NativeModules, NativeEventEmitter } from 'react-native';
 class AdsPostXPlugin {
-  init = (accountId, callback) => {
-    NativeModules.adsPostXPlugin.initWith(accountId, (response) => {
+  init = (sdkId, callback) => {
+    NativeModules.adsPostXPlugin.initWith(sdkId, (response) => {
       // console.log(`obj : ${obj}`);
       // console.log(`status is : ${obj.status} and error is: ${obj.error}`);
       callback(response);
@@ -83,11 +83,11 @@ class AdsPostXPlugin {
     NativeModules.adsPostXPlugin.setTimeOut(seconds);
   };
 
-  getOffers = async (apiKey, parameters = {}) => {
+  getOffers = async (sdkId, parameters = {}) => {
     return new Promise((resolve, reject) => {
       const sanitizedParameters = parameters || {}; // Use {} if parameters is null or undefined
       NativeModules.adsPostXPlugin.getOffers(
-        apiKey,
+        sdkId,
         sanitizedParameters,
         (status, response) => {
           if (status) {

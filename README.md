@@ -13,8 +13,8 @@ npm install rnadspostx
 1. Init AdsPostX:
 
 ```js
- const accountId = 'a359ddi39903994f';
- AdsPostXPlugin.init(accountId, (response) => {
+ const sdkId = 'a359ddi39903994f';
+ AdsPostXPlugin.init(sdkId, (response) => {
      /* if response is true, mean init call is success.
         otherwise you will get error with response.*/
     }
@@ -69,7 +69,7 @@ AdsPostXPlugin.show(showOptions);
 4. Get Offers
 
 ```js
-const apiKey = 'YOUR_API_KEY';
+const sdkId = 'YOUR_SDK_ID';
 const payload = {
   country: 'USA',
   firstname: 'Dev',
@@ -78,7 +78,7 @@ const payload = {
 };
 
 try {
-  const responseData = await AdsPostXPlugin.getOffers(apiKey, payload);
+  const responseData = await AdsPostXPlugin.getOffers(sdkId, payload);
 
   // to access offers
   if (responseData.status) {

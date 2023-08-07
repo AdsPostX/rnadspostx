@@ -20,11 +20,11 @@ class Rnadspostx: RCTEventEmitter {
     return [Event.onShow, Event.onError,Event.onDismiss]
   }
   
-  @objc func initWith(_ accountId: String,  callback: @escaping RCTResponseSenderBlock) {
+  @objc func initWith(_ sdkId: String,  callback: @escaping RCTResponseSenderBlock) {
    
     var jsonObject: [String: Any] = [:]
     
-    AdsPostx.initWith(accountId: accountId) { result in
+    AdsPostx.initWith(sdkId: sdkId) { result in
       switch(result) {
       case .success():
         jsonObject[ResponseKeys.status] = true
@@ -111,9 +111,9 @@ class Rnadspostx: RCTEventEmitter {
 }
 
 @objc
-func getOffers(_ apiKey: String, parameters: [String: Any], completion: @escaping RCTResponseSenderBlock) {
+func getOffers(_ sdkId: String, parameters: [String: Any], completion: @escaping RCTResponseSenderBlock) {
   // Implementation of the method
-              AdsPostx.getOffers(apiKey: apiKey, parameters: parameters) { [weak self] result in
+              AdsPostx.getOffers(sdkId: sdkId, parameters: parameters) { [weak self] result in
                 switch result {
                 case .success(let json):
                 // let jsonString = "\(json)"
